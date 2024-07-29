@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 export 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:zs_teck/companents/login/models/user_model.dart';
 
 import '../../global_widgets/simple_info_dialog.dart';
 import '../../helpers/checking_dvice_type.dart';
@@ -95,7 +96,29 @@ class FirebaseUserApiControllerMobile extends GetxController {
           }else{
             print("device id : "+querySnapshot.docs.first["lisanceId"]);
             print("companyId : "+querySnapshot.docs.first["companyId"]);
+            getLoggedUserInfo(querySnapshot.docs.first["lisanceId"]);
           }
+    });
+  }
+
+  void getLoggedUserInfo(String lisanceId) {
+    FirebaseFirestore.instance.collection('db_users').where('userPhoneId', isEqualTo: lisanceId).get()
+        .then((QuerySnapshot querySnapshot) {
+      if( querySnapshot.docs.isEmpty){
+        ///bu halda qeydiyyatdan kecme sehfesine gonderilmelidir.
+
+      }else{
+        UserModel mode=UserModel(
+          name: querySnapshot.docs.first["userName"],
+          surname: querySnapshot.docs.first["userSurname"],
+          code: querySnapshot.docs.first["temKod"],
+          companyId: querySnapshot.docs.first["compId"],
+          roleName: querySnapshot.docs.first["roleName"],
+          phone:  querySnapshot.docs.first["userPhone"]
+
+        );
+        print("mode: "+mode.toString());
+      }
     });
   }
 

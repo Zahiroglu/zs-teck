@@ -138,7 +138,7 @@ class FirebaseUserApiControllerMobile extends GetxController {
        print("Icazeler tapilmadi");
      }else{
        querySnapshot.docs.forEach((e){
-         print("e permitions : "+e.toString());
+         print("e permitions : "+e.toString());//permitions list
         UserPermitionsModel model=UserPermitionsModel(
           iconMenu: e["iconMenu"],
           isMenuItems: e["isMenuItems"],

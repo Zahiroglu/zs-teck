@@ -5,13 +5,13 @@
 import 'package:hive/hive.dart';
 import 'dart:convert';
 
-//part 'user_connections_model.g.dart';
+part 'connections_user_model.g.dart';
 
 UserConnectionsModel userConnectionsModelFromJson(String str) => UserConnectionsModel.fromJson(json.decode(str));
 
 String userConnectionsModelToJson(UserConnectionsModel data) => json.encode(data.toJson());
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 3)
 class UserConnectionsModel {
   @HiveField(1)
   String userId;

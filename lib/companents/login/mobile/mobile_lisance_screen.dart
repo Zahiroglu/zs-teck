@@ -99,7 +99,7 @@ class ScreenRequestCheckMobile extends StatelessWidget {
             height: 10,
           ),
           CustomText(
-            labeltext: apiController.basVerenXeta,
+            labeltext: apiController.basVerenXeta.value,
             fontWeight: FontWeight.normal,
             maxline: 3,
             fontsize: 18,
@@ -108,7 +108,7 @@ class ScreenRequestCheckMobile extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          apiController.countClick.value == 3
+          apiController.countClick.value == 30
               ? CustomElevetedButton(
                   cllback: () {
                     apiController.clouseApp();

@@ -2,17 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:zs_teck/companents/new_models/company_model.dart';
+import 'package:zs_teck/companents/new_models/connections_user_model.dart';
+import 'package:zs_teck/companents/new_models/user_model.dart';
+import 'package:zs_teck/companents/new_models/user_permitions_model.dart';
 import 'package:zs_teck/routs/rout_controller.dart';
 import 'package:zs_teck/services/local_databases_services/models/model_downloads.dart';
 import 'package:zs_teck/thema/thema_controller.dart';
 import 'package:zs_teck/thema/theme_constants.dart';
-import 'companents/login/models/logged_usermodel.dart';
-import 'companents/login/models/model_company.dart';
-import 'companents/login/models/model_regions.dart';
-import 'companents/login/models/model_token.dart';
-import 'companents/login/models/model_userconnnection.dart';
-import 'companents/login/models/model_userspormitions.dart';
-import 'companents/login/models/user_model.dart';
+import 'companents/new_models/logged_usermodel.dart';
 import 'language/lang_constants.dart';
 import 'language/localization_controller.dart';
 import 'language/utils/messages.dart';
@@ -27,14 +25,12 @@ Future<void>  main() async{
   Map<String, Map<String, String>> languages = await dep.init();
   //sonuncu HiveType 37-di
   Hive.registerAdapter(LoggedUserModelAdapter());
+  Hive.registerAdapter(ModelRegionAdapter());
   Hive.registerAdapter(CompanyModelAdapter());
-  Hive.registerAdapter(ModelRegionsAdapter());
-  Hive.registerAdapter(TokenModelAdapter());
-  Hive.registerAdapter(ModelUserConnectionAdapter());
-  Hive.registerAdapter(ModelUserPermissionsAdapter());
+  Hive.registerAdapter(UserConnectionsModelAdapter());
+  Hive.registerAdapter(UserPermitionsModelAdapter());
   Hive.registerAdapter(UserModelAdapter());
-  Hive.registerAdapter(ModelModuleAdapter());
-  Hive.registerAdapter(ModelDownloadsAdapter());
+
 
   runApp(MyApp(languages: languages));
 

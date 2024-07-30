@@ -22,6 +22,8 @@
     "nezsystem":"Nəzarət və idarəetmə sistemi",
     "axtar":"Axtar",
     "developed":"Hazırladı : Samir Zahiroglu",
-    "usercount":"İstifadəçi sayı"
+    "usercount":"İstifadəçi sayı",
+    "hormetliIstifadeci":"Hormetli istifadeci ",
+    "blokLisanse":"Sizin istifade huququnuz bloklanmisdir.Zehmet olmasa adminle elaqe saxla"
 
 }

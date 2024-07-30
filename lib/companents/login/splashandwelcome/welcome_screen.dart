@@ -9,7 +9,7 @@ import '../../../helpers/checking_dvice_type.dart';
 import '../../../routs/rout_controller.dart';
 import '../../../services/local_databases_services/local_db_downloads.dart';
 import '../../../services/local_databases_services/local_users_services.dart';
-import '../models/logged_usermodel.dart';
+import '../../new_models/logged_usermodel.dart';
 
 class WellCameScreen extends StatefulWidget {
   const WellCameScreen({Key? key}) : super(key: key);
@@ -60,6 +60,8 @@ class _WellCameScreenState extends State<WellCameScreen> with TickerProviderStat
         }
       }
       else {
+        Get.offNamed(RouteHelper.getMobileLisanceScreen());
+
         bool base=await localBaseDownloads.checkIfUserMustDonwloadsBaseFirstTime(loggedUserModel.userModel!.roleId!);
         print("Yukelnmeli baza var? "+base.toString());
         if (base) {

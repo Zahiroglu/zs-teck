@@ -86,7 +86,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   ] : [],
                   textAlignVertical: TextAlignVertical.center,
                   textAlign: widget.align,
-                  obscureText: widget.obscureText!,
+                  obscureText: widget.obscureText,
                   validator: (value) =>
                   value!.isEmpty
                       ? widget.isvalid!

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import '../../companents/login/models/logged_usermodel.dart';
+import '../../companents/new_models/logged_usermodel.dart';
 
 class LocalUserServices {
   late Box loggedUserBox = Hive.box("LoggedUsers");
@@ -20,15 +20,7 @@ class LocalUserServices {
 
   LoggedUserModel getLoggedUser() => loggedUserBox.values.firstOrNull ?? LoggedUserModel();
 
-  Future<String> getLoggedToken() async {
-    LoggedUserModel loggedUserModel =  getLoggedUser();
-    return loggedUserModel.tokenModel!.accessToken!;
-  }
 
-  Future<String> getRefreshToken() async {
-    LoggedUserModel loggedUserModel =  getLoggedUser();
-    return loggedUserModel.tokenModel!.refreshToken!;
-  }
 
   Future<void> addValueForAppFistTimeOpen(bool value) async {
     await appFirstTimeOpen.clear();

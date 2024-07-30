@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CustomSwitch extends StatefulWidget {
   const CustomSwitch({required this.changeTheme,super.key});

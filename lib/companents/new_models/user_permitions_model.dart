@@ -3,13 +3,13 @@
 //     final userPermitionsModel = userPermitionsModelFromJson(jsonString);
 import 'package:hive/hive.dart';
 import 'dart:convert';
-//part 'user_permitions_model.g.dart';
+part 'user_permitions_model.g.dart';
 
 UserPermitionsModel userPermitionsModelFromJson(String str) => UserPermitionsModel.fromJson(json.decode(str));
 
 String userPermitionsModelToJson(UserPermitionsModel data) => json.encode(data.toJson());
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class UserPermitionsModel {
   @HiveField(1)
   String iconMenu;
@@ -21,6 +21,8 @@ class UserPermitionsModel {
   String perCode;
   @HiveField(5)
   String perValue;
+  @HiveField(6)
+  String iconSelected;
 
   UserPermitionsModel({
     required this.iconMenu,
@@ -28,6 +30,7 @@ class UserPermitionsModel {
     required this.lang,
     required this.perCode,
     required this.perValue,
+    required this.iconSelected,
   });
 
   factory UserPermitionsModel.fromJson(Map<String, dynamic> json) => UserPermitionsModel(
@@ -36,6 +39,7 @@ class UserPermitionsModel {
     lang: json["lang"],
     perCode: json["perCode"],
     perValue: json["perValue"],
+    iconSelected: json["iconSelected"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -44,6 +48,7 @@ class UserPermitionsModel {
     "lang": lang,
     "perCode": perCode,
     "perName": perValue,
+    "iconSelected": iconSelected,
   };
 
   @override

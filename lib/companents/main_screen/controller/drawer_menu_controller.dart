@@ -35,7 +35,7 @@ class DrawerMenuController extends getx.GetxController {
   //LocalGirisCixisServiz localGirisCixisServiz=LocalGirisCixisServiz();
   //late Rx<ModelSatisEmeliyyati> modelSatisEmeliyyat = ModelSatisEmeliyyati().obs;
   GlobalKey<ScaffoldState> keyScaff = GlobalKey(); // Create a key
-  dynamic pageView =  SizedBox();
+  dynamic pageView =  const SizedBox();
 
 
   @override
@@ -389,7 +389,7 @@ class DrawerMenuController extends getx.GetxController {
                 const Spacer(),
                 isMenuExpended.isTrue
                     ? const SizedBox()
-                    : model.totalNotif==0?SizedBox():DecoratedBox(
+                    : model.totalNotif==0?const SizedBox():DecoratedBox(
                   decoration: const BoxDecoration(
                     //color: Colors.grey.withOpacity(0.5),
                     shape: BoxShape.circle,
@@ -408,10 +408,10 @@ class DrawerMenuController extends getx.GetxController {
                           ),
                       ),
                     ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
               ],
             ),
-            model.statickField==true?SizedBox(height: 5,):SizedBox(),
+            model.statickField==true?const SizedBox(height: 5,):const SizedBox(),
           ],
         ),
       ),
@@ -441,7 +441,7 @@ class DrawerMenuController extends getx.GetxController {
 
   void logOut() {
     getx.Get.dialog(ShowSualDialog(
-        messaje: "cixisucun".tr,
+        messaje: "cixisucunsorgu".tr,
         callBack: (val) async {
           getx.Get.delete<DrawerMenuController>();
         //  localBazalar.deleteAllBases();
@@ -476,7 +476,7 @@ class DrawerMenuController extends getx.GetxController {
   Future<void> changeIndex(int drawerIndexdata, SelectionButtonData model, bool desktop) async {
     switch (model.codename) {
       case "dashboard":
-       // pageView = DashborudScreenMobile(drawerMenuController: this);
+       pageView = DashborudScreenMobile(drawerMenuController: this);
         break;
       case "userspanel":
           //pageView = const UserPanelWindosScreen();

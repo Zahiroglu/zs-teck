@@ -8,6 +8,7 @@ class FirebaseTokenGeneratorController {
   FirebaseMessaging messaging=FirebaseMessaging.instance;
   //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+
   Future<bool> reguestForFirebaseNoty() async {
     NotificationSettings settings=await messaging.requestPermission(
       alert: true,

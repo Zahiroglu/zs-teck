@@ -77,7 +77,6 @@ class FirebaseUserApiControllerMobile extends GetxController {
         },
       ));
     }
-    changeLoading();
   }
 
   void changeLoading() {
@@ -98,31 +97,30 @@ class FirebaseUserApiControllerMobile extends GetxController {
   }
 
   Future<void> checkIfUserHaveLisance(String dviceId) async {
-    // DialogHelper.showLoading("yoxlanir".tr);
-    isLoading.value = true;
-    await firebaseTokenGeneratorController
-        .reguestForFirebaseNoty()
-        .then((val) async {
+    await firebaseTokenGeneratorController.reguestForFirebaseNoty().then((val) async {
       if (val) {
         await firebaseTokenGeneratorController.getFireToken().then((token) async {
           if (token.isNotEmpty) {
             await FirebaseFirestore.instance.collection('db_lisances').where('lisanceId', isEqualTo: dviceId).get()
                 .then((QuerySnapshot querySnapshot) async {
               if (querySnapshot.docs.isEmpty) {
+                changeLoading();    // DialogHelper.hideLoading();
                 deviceIdMustvisible.value = true;
                 basVerenXeta.value = "lisanceError".tr;
+                update();
               } else {
                 await getLoggedUserInfo(querySnapshot.docs.first["lisanceId"],
                     querySnapshot.docs.first["companyId"].toString(), token);
+                update();
               }
             });
           }
         });
+      }else{
+        basVerenXeta.value="xetaBasverdi".tr;
+        update();
       }
     });
-
-    isLoading.value = false;
-    // DialogHelper.hideLoading();
     update();
   }
 
@@ -138,6 +136,7 @@ class FirebaseUserApiControllerMobile extends GetxController {
         .get()
         .then((QuerySnapshot querySnapshot) async {
       if (querySnapshot.docs.isEmpty) {
+        changeLoading();    // DialogHelper.hideLoading();
         ///bu halda qeydiyyatdan kecme sehfesine gonderilmelidir.
       } else {
         var listPermition = querySnapshot.docs.first["permitions"];
@@ -176,7 +175,9 @@ class FirebaseUserApiControllerMobile extends GetxController {
           localUserServices.init();
           localUserServices.addUserToLocalDB(loggedUserModel);
           Get.offAllNamed(RouteHelper.getMobileMainScreen());
+          changeLoading();    // DialogHelper.hideLoading();
         });
+
       }
     });
   }

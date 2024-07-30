@@ -51,25 +51,26 @@ class _WellCameScreenState extends State<WellCameScreen> with TickerProviderStat
   getUser(ConnectivityResult connectivityResult) async {
     loggedUserModel = localUserServices.getLoggedUser();
     checkDviceType=CheckDviceType();
+    Get.offNamed(RouteHelper.getLoginMobileFirstScreen());
 
-      if (loggedUserModel.isLogged == null || loggedUserModel.isLogged == false) {
-        if (await localUserServices.getIfAppOpenFistOrNot()==false) {
-          Get.offNamed(RouteHelper.getLoginMobileFirstScreen());
-        } else {
-          Get.offNamed(RouteHelper.getMobileLisanceScreen());
-        }
-      }
-      else {
-        Get.offNamed(RouteHelper.getMobileLisanceScreen());
-
-        bool base=await localBaseDownloads.checkIfUserMustDonwloadsBaseFirstTime(loggedUserModel.userModel!.roleId!);
-        print("Yukelnmeli baza var? "+base.toString());
-        if (base) {
-         // Get.offNamed(RouteHelper.getbazaDownloadMobile());
-        } else {
-         // Get.offNamed(RouteHelper.getMobileMainScreen());
-        }
-      }
+      // if (loggedUserModel.isLogged == null || loggedUserModel.isLogged == false) {
+      //   if (await localUserServices.getIfAppOpenFistOrNot()==false) {
+      //     Get.offNamed(RouteHelper.getLoginMobileFirstScreen());
+      //   } else {
+      //     Get.offNamed(RouteHelper.getMobileLisanceScreen());
+      //   }
+      // }
+      // else {
+      //   Get.offNamed(RouteHelper.getMobileLisanceScreen());
+      //
+      //   bool base=await localBaseDownloads.checkIfUserMustDonwloadsBaseFirstTime(loggedUserModel.userModel!.roleId!);
+      //   print("Yukelnmeli baza var? "+base.toString());
+      //   if (base) {
+      //    // Get.offNamed(RouteHelper.getbazaDownloadMobile());
+      //   } else {
+      //    // Get.offNamed(RouteHelper.getMobileMainScreen());
+      //   }
+      // }
 
 
     setState(() {

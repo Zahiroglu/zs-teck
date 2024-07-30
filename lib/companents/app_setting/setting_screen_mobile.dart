@@ -46,7 +46,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                   pinned: true,
                   floating: false,
                   stretch: true,
-                  actions: [],
+                  actions: const [],
                   title: const SizedBox(),
                   leading: IconButton(
                     icon: const Icon(Icons.menu),onPressed:_openDrawer,
@@ -88,13 +88,6 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
           body:  widgetSettingPart(settingPanelController.modelModule.value, themaController),
         ),
       );
-      return Scaffold(
-          body: Obx(() => Column(
-            children: [
-              widgetHeaderFull(localizationController),
-              widgetSettingPart(settingPanelController.modelModule.value, themaController),
-            ],
-          )));
     }));
   }
 
@@ -140,7 +133,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
               color:
               themaController.isDark.isTrue ? Colors.white : Colors.black,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Obx(() => CustomText(
@@ -152,12 +145,12 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
               color:
               themaController.isDark.isTrue ? Colors.white : Colors.black,
             )),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
-              margin: EdgeInsets.only(left: 30, right: 30),
-              padding: EdgeInsets.only(top: 5, bottom: 5),
+              margin: const EdgeInsets.only(left: 30, right: 30),
+              padding: const EdgeInsets.only(top: 5, bottom: 5),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
@@ -177,6 +170,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                             color: themaController.isDark.isTrue
                                 ? Colors.white
                                 : Colors.black),
+                        const SizedBox(width: 10,),
                         Obx(() => InkWell(
                           onTap: () {
                             themaController.toggleTheme();
@@ -197,6 +191,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                             color: themaController.isDark.isTrue
                                 ? Colors.white
                                 : Colors.black),
+                        const SizedBox(width: 10,),
                         WidgetDilSecimi(
                           callBack: (){
                             setState(() {
@@ -223,7 +218,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
       child: Column(
         children: [
           widgetPersonalInfo(model, themaController),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           widgetPersonalPermisions(model, themaController),
@@ -244,7 +239,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
           CustomText(
               color:
                   themaController.isDark.isTrue ? Colors.white : Colors.black,
-              labeltext: "haqqinda".tr.toUpperCase(),
+              labeltext: "userHaqqinda".tr.toUpperCase(),
               fontWeight: FontWeight.w700,
               fontsize: 14),
           Divider(
@@ -270,7 +265,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                   color: themaController.isDark.isTrue
                       ? Colors.white
                       : Colors.black,
-                  labeltext: model.userRegionName.toString().toUpperCase() ?? "Bos")
+                  labeltext: model.userRegionName.toString().toUpperCase())
             ],
           ),
           const SizedBox(
@@ -296,7 +291,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                       ? Colors.white
                       : Colors.black,
                   labeltext:
-                      model.userbirthDay.toString().toUpperCase() ??"")
+                      model.userbirthDay.toString().toUpperCase())
             ],
           ),
           const SizedBox(
@@ -318,7 +313,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                 width: 10,
               ),
               CustomText(
-                labeltext: model.temKod ?? "".toUpperCase() ?? "",
+                labeltext: model.temKod ?? "".toUpperCase(),
                 color:
                     themaController.isDark.isTrue ? Colors.white : Colors.black,
               )
@@ -343,7 +338,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                 width: 10,
               ),
               CustomText(
-                labeltext: model.userPhone.toString() ?? "",
+                labeltext: model.userPhone.toString(),
                 color:
                     themaController.isDark.isTrue ? Colors.white : Colors.black,
               )
@@ -371,7 +366,7 @@ class _SettingScreenMobileState extends State<SettingScreenMobile> {
                   color: themaController.isDark.isTrue
                       ? Colors.white
                       : Colors.black,
-                  labeltext: model.userEmail.toString() ?? "")
+                  labeltext: model.userEmail.toString())
             ],
           ),
           const SizedBox(

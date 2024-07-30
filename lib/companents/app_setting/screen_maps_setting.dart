@@ -203,7 +203,7 @@ class _ScreenMapsSettingState extends State<ScreenMapsSetting> {
             width: 5,
           ),
           CustomText(
-            labeltext: "Naviqasiya ucun Program",
+            labeltext: "navUcunProg".tr,
             fontsize: 16,
             maxline: 2,
           ),

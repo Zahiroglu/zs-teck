@@ -24,6 +24,32 @@
     "developed":"Hazırladı : Samir Zahiroglu",
     "usercount":"İstifadəçi sayı",
     "hormetliIstifadeci":"Hormetli istifadeci ",
-    "blokLisanse":"Sizin istifade huququnuz bloklanmisdir.Zehmet olmasa adminle elaqe saxla"
+    "blokLisanse":"Sizin istifade huququnuz bloklanmisdir.Zehmet olmasa adminle elaqe saxla",
+    "xetaBasverdi":"Xeta bas verdi",
+    "cixisucunsorgu":"Hormetli istifadeci programdan cixis ucun eminsizniz?",
+    "dashboard":"Ana sehife",
+    "yuklemeler":"Yuklemeler",
+    "haqqimizda":"Haqqimizda",
+    "privancypolicy":"Məxfilik siyasəti",
+    "setting":"Parametrler",
+    "cixiset":"Cixis et",
+    "mapandNavigation":"Xerite ve istiqamet",
+    "navUcunProg":"Naviqasiya ucun program",
+    "giriscixis":"Giris-Cixis",
+    "giriscixistype":"Giris-cixis tipi",
+    "userHaqqinda":"Istifadeci haqqinda",
+    "region":"Region",
+    "birthDay":"Dogum tarixi",
+    "userCode":"Temsilci kodu",
+    "userPhone":"Telefon",
+    "email":"Email",
+    "diger":"Diger",
+    "icazeler":"Icazeler",
+    "connections":"Baglantilar",
+    "appsettings":"Program parametrleri",
+    "sistemyenidenBaslat":"Sistemi yeniden baslat",
+    "dil":"Dil",
+    "theme":"Thema"
+
 
 }

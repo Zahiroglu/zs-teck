@@ -17,7 +17,7 @@ class CompanyModel {
   @HiveField(6)
   String? copmanyBaseUrl;
   @HiveField(7)
-  ModelRegion? modelRegion;
+  List<ModelRegion>? modelRegion;
 
   CompanyModel({
     this.companyAdress,
@@ -40,7 +40,7 @@ class CompanyModel {
     companyName: json["companyName"],
     companyPhone: json["companyPhone"],
     copmanyBaseUrl: json["copmanyBaseUrl"],
-    modelRegion: ModelRegion.fromJson(json["modelRegion"]),
+    modelRegion: json["modelRegion"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -50,7 +50,7 @@ class CompanyModel {
     "companyName": companyName,
     "companyPhone": companyPhone,
     "copmanyBaseUrl": copmanyBaseUrl,
-    "modelRegion": modelRegion?.toJson(),
+    "modelRegion": modelRegion,
   };
 
   @override

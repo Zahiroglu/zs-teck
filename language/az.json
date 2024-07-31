@@ -49,7 +49,13 @@
     "appsettings":"Program parametrleri",
     "sistemyenidenBaslat":"Sistemi yeniden baslat",
     "dil":"Dil",
-    "theme":"Thema"
-
-
+    "theme":"Thema",
+    "titleBackPermit":"Gps izleme icazesi",
+    "desBackPermit":"Hormetli istifadeci, program is vaxti canli izlemeni temin etmek ucun gps icazesine ehtiyac duyur. Programin duzgun islemesi ucun arxa panel gpz izleme icazesini vermeyiniz lazimdir. Eks halda program islemeyecekdir. Program ayarlarindan 'Hemise icaze ver'-i secin",
+    "titleNotyPermit":"Bildirişler icazesi",
+    "desNotyPermit":"Hormetli istifadeci, sirket daxili bildirislerin size vaxtinda gonderilmesi ucun icazeye ehtoyac var. Zehmet olmasa icaze verin",
+    "ad":"Ad",
+    "soyad":"Soyad",
+    "cins":"Cins",
+    "regionsec":"Region sec"
 }

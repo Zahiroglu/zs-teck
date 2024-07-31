@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../companents/app_setting/screen_maps_setting.dart';
-import '../companents/login/mobile/login_mobile_first_screen.dart';
-import '../companents/login/mobile/mobile_lisance_screen.dart';
+import '../companents/login/screens/app_permition_setting.dart';
+import '../companents/login/screens/mobile_lisance_screen.dart';
+import '../companents/login/screens/screen_user_self_register.dart';
 import '../companents/login/splashandwelcome/welcome_screen.dart';
 import '../companents/main_screen/mobile/base_screen_mobile.dart';
 class RouteHelper {
@@ -13,6 +14,7 @@ class RouteHelper {
   static const String mobileLoginFistScreen = '/mobileLoginFistScreen';
   static const String mobileMainScreen = '/mobileMainScreen';
   static const String mobileMapSettingMobile = '/mobileMapSettingMobile';
+  static const String screenUsersSelfRegister = '/screenUsersSelfRegister';
 
   /////////////////getLinks
   static String getWellComeScreen() => wellcome;
@@ -20,6 +22,7 @@ class RouteHelper {
   static String getLoginMobileFirstScreen() => mobileLoginFistScreen;
   static String getMobileMainScreen() => mobileMainScreen;
   static String getwidgetMapSettingScreenMobile() => mobileMapSettingMobile;
+  static String getScreenUsersSelfRegister() => screenUsersSelfRegister;
 
 
   static List<GetPage> routes = [
@@ -35,7 +38,7 @@ class RouteHelper {
       return  Container();
     }),
     GetPage(name: mobileLoginFistScreen, page: () {
-      return const LoginMobileFirstScreen();
+      return const ScreenAppPermitionSetting();
       return  Container();
     }),
     GetPage(
@@ -50,6 +53,18 @@ class RouteHelper {
         transitionDuration: const Duration(milliseconds: 600),
         name: mobileMapSettingMobile, page: () {
       return  const ScreenMapsSetting();
+      return  Container();
+    }),
+    GetPage(
+        name: screenUsersSelfRegister, page: () {
+      return   ScreenUsersSelfRegister(
+        lisanceId: Get.arguments[0],
+        token: Get.arguments[1],
+        companyId: Get.arguments[2],
+        moduleId: Get.arguments[3],
+        roleId: Get.arguments[4],
+
+      );
       return  Container();
     }),
 

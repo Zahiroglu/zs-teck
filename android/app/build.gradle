@@ -3,6 +3,8 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id "org.jetbrains.kotlin.android"
+    id "com.google.firebase.crashlytics"
     id("com.google.gms.google-services")
 }
 
@@ -37,6 +39,7 @@ if (flutterVersionName == null) {
 //    // https://firebase.google.com/docs/android/setup#available-libraries
 //}
 android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
     namespace = "com.zahiroglu.zs_teck"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
@@ -51,10 +54,12 @@ android {
         applicationId = "com.zahiroglu.zs_teck"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+       // minSdk = flutter.minSdkVersion
+        //targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
     }
 
     buildTypes {
@@ -62,6 +67,10 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+            shrinkResources false
+            //proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
+
+
         }
     }
 }
@@ -69,3 +78,5 @@ android {
 flutter {
     source = "../.."
 }
+Project background_geolocation = project(':flutter_background_geolocation')
+apply from: "${background_geolocation.projectDir}/background_geolocation.gradle"

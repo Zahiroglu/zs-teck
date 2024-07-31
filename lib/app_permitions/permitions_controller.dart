@@ -1,23 +1,18 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart';
 
 class LocalPermissionsController {
-  FirebaseMessaging messaging=FirebaseMessaging.instance;
   //firebase notifications
   Future<bool> checkForFirebaseNoticifations()async{
-    bool status=false;
-    messaging.getNotificationSettings().then((val){
-      if(val.authorizationStatus==AuthorizationStatus.authorized){
-        status= true;
-      }else{
-        status= false;
-      }
-    });
-    return status;
+    if (await Permission.notification.isGranted) {
+      return await Permission.notification.isGranted;
+    }
+    return false;
   }
 
   Future<bool> reguestForFirebaseNoty() async {
-    NotificationSettings settings=await messaging.requestPermission(
+    NotificationSettings settings=await FirebaseMessaging.instance.requestPermission(
         alert: true,
         badge: true,
         announcement: true,
@@ -33,19 +28,6 @@ class LocalPermissionsController {
     }
   }
 
-  // Method to check if location permission is granted
-  Future<bool> checkLocationPermission() async {
-    return await Permission.location.isGranted;
-  }
-
-  Future<bool> checkNotyPermission() async {
-    return await Permission.notification.isGranted;
-  }
-
-  // Method to request location permission
-  Future<void> requestLocationPermission() async {
-    await Permission.location.request();
-  }
 
   // Method to check if background location permission is granted
   Future<bool> checkBackgroundLocationPermission() async {
@@ -55,18 +37,15 @@ class LocalPermissionsController {
     return false;
   }
 
-  // Method to request background location permission
-  Future<void> requestBackgroundLocationPermission() async {
-    if (!(await Permission.location.isGranted)) {
-      await Permission.locationAlways.request();
-    }
-    await Permission.locationAlways.request();
 
-  }
-  Future<void> requestNotyPermission() async {
-    if (!(await Permission.notification.isGranted)) {
-      await Permission.notification.request();
+  Future<bool> permissionLocationAlways() async {
+    bool hasPermission = false;
+    int status = await BackgroundGeolocation.requestPermission();
+    if (status == ProviderChangeEvent.AUTHORIZATION_STATUS_ALWAYS) {
+      hasPermission=true;
+    } else if (status == ProviderChangeEvent.AUTHORIZATION_STATUS_WHEN_IN_USE) {
+      hasPermission=false;
     }
-    await Permission.notification.request();
+    return Future<bool>.value(hasPermission);
   }
 }

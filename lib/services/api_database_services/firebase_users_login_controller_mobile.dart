@@ -53,6 +53,12 @@ class FirebaseUserApiControllerMobile extends GetxController {
     super.onInit();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   Future<String> getLanguageIndex() async {
     return await Hive.box("myLanguage").get("langCode") ?? "az";
   }
@@ -97,92 +103,139 @@ class FirebaseUserApiControllerMobile extends GetxController {
   }
 
   Future<void> checkIfUserHaveLisance(String dviceId) async {
-    await firebaseTokenGeneratorController.reguestForFirebaseNoty().then((val) async {
-      if (val) {
-        await firebaseTokenGeneratorController.getFireToken().then((token) async {
-          if (token.isNotEmpty) {
-            await FirebaseFirestore.instance.collection('db_lisances').where('lisanceId', isEqualTo: dviceId).get()
-                .then((QuerySnapshot querySnapshot) async {
-              if (querySnapshot.docs.isEmpty) {
-                changeLoading();    // DialogHelper.hideLoading();
-                deviceIdMustvisible.value = true;
-                basVerenXeta.value = "lisanceError".tr;
-                update();
-              } else {
-                await getLoggedUserInfo(querySnapshot.docs.first["lisanceId"],
-                    querySnapshot.docs.first["companyId"].toString(), token);
-                update();
-              }
-            });
-          }
-        });
-      }else{
-        basVerenXeta.value="xetaBasverdi".tr;
-        update();
-      }
-    });
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      await FirebaseFirestore.instance
+          .collection('db_lisances')
+          .where('lisanceId', isEqualTo: dviceId)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        print("querySnapshot.docs.isEmpty " +
+            querySnapshot.docs.first['lisanceId'].toString());
+        print("querySnapshot.docs.isEmpty companyId " +
+            querySnapshot.docs.first['companyId'].toString());
+        print("querySnapshot.docs.isEmpty moduleId " +
+            querySnapshot.docs.first['moduleId'].toString());
+        if (querySnapshot.docs.isEmpty) {
+          changeLoading(); // DialogHelper.hideLoading();
+          deviceIdMustvisible.value = true;
+          basVerenXeta.value = "lisanceError".tr;
+          update();
+        } else {
+          await firebaseTokenGeneratorController
+              .reguestForFirebaseNoty()
+              .then((val) async {
+            if (val) {
+              await firebaseTokenGeneratorController
+                  .getFireToken()
+                  .then((token) async {
+                if (token.isNotEmpty) {
+                  await getLoggedUserInfo(
+                      querySnapshot.docs.first["lisanceId"],
+                      querySnapshot.docs.first["companyId"].toString(),
+                      token,
+                      querySnapshot.docs.first["moduleId"].toString(),
+                      querySnapshot.docs.first["roleId"].toString());
+                  update();
+                }
+              });
+            } else {
+              basVerenXeta.value = "xetaBasverdi".tr;
+              update();
+            }
+          });
+        }
+      });
+    } else {
+      Get.dialog(ShowInfoDialog(
+        icon: Icons.network_locked_outlined,
+        messaje: "internetError".tr,
+        callback: () {
+          Get.back();
+          changeLoading();
+          basVerenXeta.value="internetError".tr;
+        },
+      ));
+    }
     update();
   }
 
-  Future<void> getLoggedUserInfo(
-      String lisanceId, String compId, String token) async {
+  Future<void> getLoggedUserInfo(String lisanceId, String compId, String token, String moduleId, String roleId) async {
     List<UserPermitionsModel> listPermitions = [];
     List<UserConnectionsModel> listConnections = [];
-    CompanyModel modelCompany=CompanyModel();
-    await FirebaseFirestore.instance
-        .collection('db_users')
-        .where('compId', isEqualTo: compId)
-        .where('userPhoneId', isEqualTo: lisanceId)
-        .get()
-        .then((QuerySnapshot querySnapshot) async {
-      if (querySnapshot.docs.isEmpty) {
-        changeLoading();    // DialogHelper.hideLoading();
-        ///bu halda qeydiyyatdan kecme sehfesine gonderilmelidir.
-      } else {
-        var listPermition = querySnapshot.docs.first["permitions"];
-        var connections = querySnapshot.docs.first["userConnectionsId"];
-        listPermitions = await getMyUserPermitions(listPermition);
-        modelCompany = await getCompanyDetails(compId,int.parse(querySnapshot.docs.first["userRegionId"].toString()));
-        await getMyConnectedUsers(connections, compId).then((va) {
-          UserModel model = UserModel(
-              roleName: querySnapshot.docs.first["roleName"],
-              roleId: querySnapshot.docs.first["roleId"],
-              userName: querySnapshot.docs.first["userName"],
-              temKod: querySnapshot.docs.first["temKod"],
-              compId: querySnapshot.docs.first["compId"],
-              moduleId: int.tryParse(querySnapshot.docs.first["moduleId"].toString()),
-              moduleName: querySnapshot.docs.first["moduleName"],
-              userbirthDay: querySnapshot.docs.first["userbirthDay"],
-              userEmail: querySnapshot.docs.first["userEmail"],
-              userGender: int.tryParse(querySnapshot.docs.first["userGender"].toString()),
-              userId: querySnapshot.docs.first["userId"],
-              userPhone: querySnapshot.docs.first["userPhone"],
-              userPhoneId: querySnapshot.docs.first["userPhoneId"],
-              userRegionId: int.tryParse(querySnapshot.docs.first["userRegionId"].toString()),
-              userSurname: querySnapshot.docs.first["userSurname"],
-              permitions: listPermitions,
-              userConnectionsId: listConnections,
-              fireToken: token,
-              registerDate: querySnapshot.docs.first["registerDate"],
-              followingStatus: querySnapshot.docs.first["followingStatus"],
-              usingStatus: querySnapshot.docs.first["usingStatus"]);
-          LoggedUserModel loggedUserModel=LoggedUserModel(
-            baseUrl: modelCompany.copmanyBaseUrl,
-            isLogged: true,
-            userModel: model,
-            companyModel: modelCompany
-          );
-          localUserServices.init();
-          localUserServices.addUserToLocalDB(loggedUserModel);
-          Get.offAllNamed(RouteHelper.getMobileMainScreen());
-          changeLoading();    // DialogHelper.hideLoading();
-        });
+    CompanyModel modelCompany = CompanyModel();
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      await FirebaseFirestore.instance
+          .collection('db_users')
+          .where('compId', isEqualTo: compId)
+          .where('userPhoneId', isEqualTo: lisanceId)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        if (querySnapshot.docs.isEmpty) {
+          changeLoading(); // DialogHelper.hideLoading();
+          Get.offNamed(RouteHelper.getScreenUsersSelfRegister(),
+              arguments: [lisanceId, token, compId, moduleId, roleId]);
+        } else {
+          var listPermition = querySnapshot.docs.first["permitions"];
+          var connections = querySnapshot.docs.first["userConnectionsId"];
+          listPermitions = await getMyUserPermitions(listPermition);
+          modelCompany = await getCompanyDetails(compId,
+              int.parse(querySnapshot.docs.first["userRegionId"].toString()));
+          await getMyConnectedUsers(connections, compId).then((va) {
+            UserModel model = UserModel(
+                roleName: querySnapshot.docs.first["roleName"],
+                roleId: querySnapshot.docs.first["roleId"],
+                userName: querySnapshot.docs.first["userName"],
+                temKod: querySnapshot.docs.first["temKod"],
+                compId: querySnapshot.docs.first["compId"],
+                moduleId:
+                int.tryParse(querySnapshot.docs.first["moduleId"].toString()),
+                moduleName: querySnapshot.docs.first["moduleName"],
+                userbirthDay: querySnapshot.docs.first["userbirthDay"],
+                userEmail: querySnapshot.docs.first["userEmail"],
+                userGender: int.tryParse(
+                    querySnapshot.docs.first["userGender"].toString()),
+                userId: querySnapshot.docs.first["userId"],
+                userPhone: querySnapshot.docs.first["userPhone"],
+                userPhoneId: querySnapshot.docs.first["userPhoneId"],
+                userRegionId: int.tryParse(
+                    querySnapshot.docs.first["userRegionId"].toString()),
+                userSurname: querySnapshot.docs.first["userSurname"],
+                permitions: listPermitions,
+                userConnectionsId: listConnections,
+                fireToken: token,
+                registerDate: querySnapshot.docs.first["registerDate"],
+                followingStatus: querySnapshot.docs.first["followingStatus"],
+                usingStatus: querySnapshot.docs.first["usingStatus"]);
+            LoggedUserModel loggedUserModel = LoggedUserModel(
+                baseUrl: modelCompany.copmanyBaseUrl,
+                isLogged: true,
+                userModel: model,
+                companyModel: modelCompany);
+            localUserServices.init();
+            localUserServices.addUserToLocalDB(loggedUserModel);
+            Get.offAllNamed(RouteHelper.getMobileMainScreen());
+            changeLoading(); // DialogHelper.hideLoading();
+          });
+        }
+      });
+    } else {
+      Get.dialog(ShowInfoDialog(
+        icon: Icons.network_locked_outlined,
+        messaje: "internetError".tr,
+        callback: () {
+          Get.back();
+          changeLoading();
+          basVerenXeta.value="internetError".tr;
+        },
+      ));
+    }
 
-      }
-    });
   }
-  Future<CompanyModel> getCompanyDetails(String compId,int regionId) async {
-    CompanyModel model=CompanyModel();
+
+  Future<CompanyModel> getCompanyDetails(String compId, int regionId) async {
+    CompanyModel model = CompanyModel();
     await FirebaseFirestore.instance
         .collection('db_companies')
         .where('companyId', isEqualTo: compId)
@@ -191,27 +244,29 @@ class FirebaseUserApiControllerMobile extends GetxController {
       if (querySnapshot.docs.isEmpty) {
         ///bu halda qeydiyyatdan kecme sehfesine gonderilmelidir.
       } else {
-        await FirebaseFirestore.instance.collection('db_companies').doc(querySnapshot.docs.first["companyId"]).collection("regions").where("regionId",isEqualTo: regionId).get().then((querySnapshot2){
-          ModelRegion modela=ModelRegion(
-            regionName: querySnapshot2.docs.first["regionName"],
-            regionAdress: querySnapshot2.docs.first["regionAdress"],
-            regionId: int.tryParse(querySnapshot2.docs.first["regionId"].toString()),
-            regionCode: querySnapshot2.docs.first["regionCode"],
-            regionLatitude: double.tryParse(querySnapshot2.docs.first["regionLatitude"].toString()),
-            regionLongitude: double.tryParse(querySnapshot2.docs.first["regionLongitude"].toString())
-          );
-          model=CompanyModel(
+        await FirebaseFirestore.instance.collection('db_companies').doc(querySnapshot.docs.first["companyId"]).collection("regions")
+            .get().then((querySnapshot2) {
+              List<ModelRegion> regions=[];
+           for(var data in querySnapshot2.docs){
+             ModelRegion modela = ModelRegion(
+                 regionName: data["regionName"],
+                 regionAdress: data["regionAdress"],
+                 regionId: int.tryParse(data["regionId"].toString()),
+                 regionCode: data["regionCode"],
+                 regionLatitude: double.tryParse(data["regionLatitude"].toString()),
+                 regionLongitude: double.tryParse(data["regionLongitude"].toString()));
+             regions.add(modela);
+           }
+          model = CompanyModel(
             companyId: querySnapshot.docs.first["companyId"],
             companyAdress: querySnapshot.docs.first["companyAdress"],
             companyMail: querySnapshot.docs.first["companyMail"],
             companyName: querySnapshot.docs.first["companyName"],
             companyPhone: querySnapshot.docs.first["companyPhone"],
             copmanyBaseUrl: querySnapshot.docs.first["copmanyBaseUrl"],
-            modelRegion: modela,
+            modelRegion: regions,
           );
         });
-
-
       }
     });
     return model;
@@ -229,12 +284,12 @@ class FirebaseUserApiControllerMobile extends GetxController {
       } else {
         for (var e in querySnapshot.docs) {
           UserPermitionsModel model = UserPermitionsModel(
-              iconMenu: e["iconMenu"],
-              isMenuItems: e["isMenuItems"],
-              lang: e["lang"],
-              perCode: e["perCode"],
-              perValue: e["perValue"],
-              iconSelected: e["iconSelected"],
+            iconMenu: e["iconMenu"],
+            isMenuItems: e["isMenuItems"],
+            lang: e["lang"],
+            perCode: e["perCode"],
+            perValue: e["perValue"],
+            iconSelected: e["iconSelected"],
           );
           print("per :" + model.toString());
           newList.add(model);

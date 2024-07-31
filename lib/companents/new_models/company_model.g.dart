@@ -23,7 +23,7 @@ class CompanyModelAdapter extends TypeAdapter<CompanyModel> {
       companyName: fields[4] as String?,
       companyPhone: fields[5] as String?,
       copmanyBaseUrl: fields[6] as String?,
-      modelRegion: fields[7] as ModelRegion?,
+      modelRegion: (fields[7] as List?)?.cast<ModelRegion>(),
     );
   }
 

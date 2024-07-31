@@ -9,10 +9,22 @@ import '../../../services/api_database_services/firebase_users_login_controller_
 
 //import 'package:platform_device_id/platform_device_id.dart';
 
-class ScreenRequestCheckMobile extends StatelessWidget {
+class ScreenRequestCheckMobile extends StatefulWidget {
   ScreenRequestCheckMobile({Key? key}) : super(key: key);
 
+  @override
+  State<ScreenRequestCheckMobile> createState() => _ScreenRequestCheckMobileState();
+}
+
+class _ScreenRequestCheckMobileState extends State<ScreenRequestCheckMobile> {
   FirebaseUserApiControllerMobile apiController = Get.put(FirebaseUserApiControllerMobile());
+
+
+  @override
+  void dispose() {
+    Get.delete<FirebaseUserApiControllerMobile>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

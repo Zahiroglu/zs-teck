@@ -153,14 +153,15 @@ class FirebaseUserApiControllerMobile extends GetxController {
         callback: () {
           Get.back();
           changeLoading();
-          basVerenXeta.value="internetError".tr;
+          basVerenXeta.value = "internetError".tr;
         },
       ));
     }
     update();
   }
 
-  Future<void> getLoggedUserInfo(String lisanceId, String compId, String token, String moduleId, String roleId) async {
+  Future<void> getLoggedUserInfo(String lisanceId, String compId, String token,
+      String moduleId, String roleId) async {
     List<UserPermitionsModel> listPermitions = [];
     List<UserConnectionsModel> listConnections = [];
     CompanyModel modelCompany = CompanyModel();
@@ -174,50 +175,61 @@ class FirebaseUserApiControllerMobile extends GetxController {
           .then((QuerySnapshot querySnapshot) async {
         if (querySnapshot.docs.isEmpty) {
           changeLoading(); // DialogHelper.hideLoading();
-          Get.offNamed(RouteHelper.getScreenUsersSelfRegister(),
-              arguments: [lisanceId, token, compId, moduleId, roleId]);
+          Get.offNamed(RouteHelper.getScreenUsersSelfRegister(), arguments: [
+            lisanceId,
+            token,
+            compId,
+            moduleId,
+            roleId,
+            dviceId.value
+          ]);
         } else {
-          var listPermition = querySnapshot.docs.first["permitions"];
-          var connections = querySnapshot.docs.first["userConnectionsId"];
-          listPermitions = await getMyUserPermitions(listPermition);
-          modelCompany = await getCompanyDetails(compId,
-              int.parse(querySnapshot.docs.first["userRegionId"].toString()));
-          await getMyConnectedUsers(connections, compId).then((va) {
-            UserModel model = UserModel(
-                roleName: querySnapshot.docs.first["roleName"],
-                roleId: querySnapshot.docs.first["roleId"],
-                userName: querySnapshot.docs.first["userName"],
-                temKod: querySnapshot.docs.first["temKod"],
-                compId: querySnapshot.docs.first["compId"],
-                moduleId:
-                int.tryParse(querySnapshot.docs.first["moduleId"].toString()),
-                moduleName: querySnapshot.docs.first["moduleName"],
-                userbirthDay: querySnapshot.docs.first["userbirthDay"],
-                userEmail: querySnapshot.docs.first["userEmail"],
-                userGender: int.tryParse(
-                    querySnapshot.docs.first["userGender"].toString()),
-                userId: querySnapshot.docs.first["userId"],
-                userPhone: querySnapshot.docs.first["userPhone"],
-                userPhoneId: querySnapshot.docs.first["userPhoneId"],
-                userRegionId: int.tryParse(
-                    querySnapshot.docs.first["userRegionId"].toString()),
-                userSurname: querySnapshot.docs.first["userSurname"],
-                permitions: listPermitions,
-                userConnectionsId: listConnections,
-                fireToken: token,
-                registerDate: querySnapshot.docs.first["registerDate"],
-                followingStatus: querySnapshot.docs.first["followingStatus"],
-                usingStatus: querySnapshot.docs.first["usingStatus"]);
-            LoggedUserModel loggedUserModel = LoggedUserModel(
-                baseUrl: modelCompany.copmanyBaseUrl,
-                isLogged: true,
-                userModel: model,
-                companyModel: modelCompany);
-            localUserServices.init();
-            localUserServices.addUserToLocalDB(loggedUserModel);
-            Get.offAllNamed(RouteHelper.getMobileMainScreen());
-            changeLoading(); // DialogHelper.hideLoading();
-          });
+          if (querySnapshot.docs.first["usingStatus"] == false) {
+            basVerenXeta.value = "qeydiyyatSorguXetasi".tr;
+            changeLoading();
+            update();
+          } else {
+            var listPermition = querySnapshot.docs.first["permitions"];
+            var connections = querySnapshot.docs.first["userConnectionsId"];
+            listPermitions = await getMyUserPermitions(listPermition);
+            modelCompany = await getCompanyDetails(compId,
+                int.parse(querySnapshot.docs.first["userRegionId"].toString()));
+            await getMyConnectedUsers(connections, compId).then((va) {
+              UserModel model = UserModel(
+                  roleName: querySnapshot.docs.first["roleName"],
+                  roleId: querySnapshot.docs.first["roleId"],
+                  userName: querySnapshot.docs.first["userName"],
+                  temKod: querySnapshot.docs.first["temKod"],
+                  compId: querySnapshot.docs.first["compId"],
+                  moduleId: querySnapshot.docs.first["moduleId"].toString(),
+                  moduleName: querySnapshot.docs.first["moduleName"],
+                  userbirthDay: querySnapshot.docs.first["userbirthDay"],
+                  userEmail: querySnapshot.docs.first["userEmail"],
+                  userGender: int.tryParse(
+                      querySnapshot.docs.first["userGender"].toString()),
+                  userId: querySnapshot.docs.first["userId"],
+                  userPhone: querySnapshot.docs.first["userPhone"],
+                  userPhoneId: querySnapshot.docs.first["userPhoneId"],
+                  userRegionId: int.tryParse(
+                      querySnapshot.docs.first["userRegionId"].toString()),
+                  userSurname: querySnapshot.docs.first["userSurname"],
+                  permitions: listPermitions,
+                  userConnectionsId: listConnections,
+                  fireToken: token,
+                  registerDate: querySnapshot.docs.first["registerDate"],
+                  followingStatus: querySnapshot.docs.first["followingStatus"],
+                  usingStatus: querySnapshot.docs.first["usingStatus"]);
+              LoggedUserModel loggedUserModel = LoggedUserModel(
+                  baseUrl: modelCompany.copmanyBaseUrl,
+                  isLogged: true,
+                  userModel: model,
+                  companyModel: modelCompany);
+              localUserServices.init();
+              localUserServices.addUserToLocalDB(loggedUserModel);
+              Get.offAllNamed(RouteHelper.getMobileMainScreen());
+              changeLoading(); // DialogHelper.hideLoading();
+            });
+          }
         }
       });
     } else {
@@ -227,11 +239,10 @@ class FirebaseUserApiControllerMobile extends GetxController {
         callback: () {
           Get.back();
           changeLoading();
-          basVerenXeta.value="internetError".tr;
+          basVerenXeta.value = "internetError".tr;
         },
       ));
     }
-
   }
 
   Future<CompanyModel> getCompanyDetails(String compId, int regionId) async {
@@ -244,19 +255,25 @@ class FirebaseUserApiControllerMobile extends GetxController {
       if (querySnapshot.docs.isEmpty) {
         ///bu halda qeydiyyatdan kecme sehfesine gonderilmelidir.
       } else {
-        await FirebaseFirestore.instance.collection('db_companies').doc(querySnapshot.docs.first["companyId"]).collection("regions")
-            .get().then((querySnapshot2) {
-              List<ModelRegion> regions=[];
-           for(var data in querySnapshot2.docs){
-             ModelRegion modela = ModelRegion(
-                 regionName: data["regionName"],
-                 regionAdress: data["regionAdress"],
-                 regionId: int.tryParse(data["regionId"].toString()),
-                 regionCode: data["regionCode"],
-                 regionLatitude: double.tryParse(data["regionLatitude"].toString()),
-                 regionLongitude: double.tryParse(data["regionLongitude"].toString()));
-             regions.add(modela);
-           }
+        await FirebaseFirestore.instance
+            .collection('db_companies')
+            .doc(querySnapshot.docs.first["companyId"])
+            .collection("regions")
+            .get()
+            .then((querySnapshot2) {
+          List<ModelRegion> regions = [];
+          for (var data in querySnapshot2.docs) {
+            ModelRegion modela = ModelRegion(
+                regionName: data["regionName"],
+                regionAdress: data["regionAdress"],
+                regionId: int.tryParse(data["regionId"].toString()),
+                regionCode: data["regionCode"],
+                regionLatitude:
+                    double.tryParse(data["regionLatitude"].toString()),
+                regionLongitude:
+                    double.tryParse(data["regionLongitude"].toString()));
+            regions.add(modela);
+          }
           model = CompanyModel(
             companyId: querySnapshot.docs.first["companyId"],
             companyAdress: querySnapshot.docs.first["companyAdress"],
@@ -274,29 +291,31 @@ class FirebaseUserApiControllerMobile extends GetxController {
 
   Future<List<UserPermitionsModel>> getMyUserPermitions(listPermition) async {
     List<UserPermitionsModel> newList = [];
-    await FirebaseFirestore.instance
-        .collection('db_rolepermitions')
-        .where('perCode', whereIn: listPermition)
-        .get()
-        .then((QuerySnapshot querySnapshot) async {
-      if (querySnapshot.docs.isEmpty) {
-        print("Icazeler tapilmadi");
-      } else {
-        for (var e in querySnapshot.docs) {
-          UserPermitionsModel model = UserPermitionsModel(
-            iconMenu: e["iconMenu"],
-            isMenuItems: e["isMenuItems"],
-            lang: e["lang"],
-            perCode: e["perCode"],
-            perValue: e["perValue"],
-            iconSelected: e["iconSelected"],
-          );
-          print("per :" + model.toString());
-          newList.add(model);
+    if (listPermition != null) {
+      await FirebaseFirestore.instance
+          .collection('db_rolepermitions')
+          .where('perCode', whereIn: listPermition)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        if (querySnapshot.docs.isEmpty) {
+          print("Icazeler tapilmadi");
+        } else {
+          for (var e in querySnapshot.docs) {
+            UserPermitionsModel model = UserPermitionsModel(
+              iconMenu: e["iconMenu"],
+              isMenuItems: e["isMenuItems"],
+              lang: e["lang"],
+              perCode: e["perCode"],
+              perValue: e["perValue"],
+              iconSelected: e["iconSelected"],
+            );
+            print("per :" + model.toString());
+            newList.add(model);
+          }
         }
-      }
-    });
-    print("perCount :" + newList.length.toString());
+      });
+      print("perCount :" + newList.length.toString());
+    }
     return newList;
   }
 

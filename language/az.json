@@ -57,5 +57,8 @@
     "ad":"Ad",
     "soyad":"Soyad",
     "cins":"Cins",
-    "regionsec":"Region sec"
+    "regionsec":"Region sec",
+    "qeydiyyatdanKec":"Qeydiyyatdan kec",
+    "qeydiyyatSorguXetasi":"Qeydiyyat sorgunuz qeyda alinmisdir.Zehmet olmasa admin tesdiqini gozleyin!",
+    "qeydiyyatYoxlanilir":"Qeydiyyat yoxlanilir"
 }

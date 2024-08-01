@@ -12,13 +12,13 @@ class UserModel {
   @HiveField(1)
   String? compId;
   @HiveField(2)
-  int? moduleId;
+  String? moduleId;
   @HiveField(3)
   String? moduleName;
   @HiveField(4)
   List<UserPermitionsModel>? permitions;
   @HiveField(5)
-  int? roleId;
+  String? roleId;
   @HiveField(6)
   String? roleName;
   @HiveField(7)
@@ -53,6 +53,7 @@ class UserModel {
   String? followingStatus;
   @HiveField(22)
   String? userRegionName;
+
 
   UserModel({
     this.compId,
@@ -109,28 +110,29 @@ class UserModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "compId": compId,
-    "moduleId": moduleId,
-    "moduleName": moduleName,
-    "permitions": List<dynamic>.from(permitions!.map((x) => x)),
-    "roleId": roleId,
-    "roleName": roleName,
+    "userId": userId,
+    "userPhoneId": userPhoneId,
     "temKod": temKod,
-    "userConnectionsId": List<dynamic>.from(userConnectionsId!.map((x) => x)),
+    "userName": userName,
+    "userSurname": userSurname,
+    "userPhone": userPhone,
+    "userbirthDay": userbirthDay,
     "userEmail": userEmail,
     "userGender": userGender,
-    "userId": userId,
-    "userName": userName,
-    "userPhone": userPhone,
-    "userPhoneId": userPhoneId,
+    "compId": compId,
     "userRegionId": userRegionId,
-    "userSurname": userSurname,
-    "userbirthDay": userbirthDay,
+    "userRegionName": userRegionName,
+    "moduleId": moduleId,
+    "moduleName": moduleName,
+    "roleId": roleId,
+    "roleName": roleName,
+    "permitions": List<dynamic>.from(permitions!.map((x) => x)),
+    "userConnectionsId": List<dynamic>.from(userConnectionsId!.map((x) => x)),
     "fireToken": fireToken,
     "registerDate": registerDate,
-    "usingStatus": usingStatus,
     "followingStatus": followingStatus,
-    "userRegionName": userRegionName,
+    "usingStatus": usingStatus,
+
   };
 
   @override

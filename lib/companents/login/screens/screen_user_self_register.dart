@@ -14,6 +14,7 @@ class ScreenUsersSelfRegister extends StatefulWidget {
   String companyId;
   String moduleId;
   String roleId;
+  String phoneId;
 
   ScreenUsersSelfRegister(
       {super.key,
@@ -21,7 +22,9 @@ class ScreenUsersSelfRegister extends StatefulWidget {
       required this.token,
       required this.companyId,
       required this.moduleId,
-      required this.roleId});
+      required this.roleId,
+      required this.phoneId,
+      });
 
   @override
   State<ScreenUsersSelfRegister> createState() =>
@@ -448,11 +451,12 @@ class _ScreenUsersSelfRegisterState extends State<ScreenUsersSelfRegister> {
                   borderColor: Colors.grey,
                   textColor: Colors.white,
                   textsize: 16,
-
                   surfaceColor: Colors.green,
                   height: 40,
-                  cllback: () {},
-                  label: "Qeydiyyatdan kec"),
+                  cllback: () {
+                    controllerRegisterUserself.regigisterUser(widget.lisanceId, widget.token, widget.companyId, widget.moduleId, widget.roleId,widget.phoneId);
+                  },
+                  label: "qeydiyyatdanKec".tr),
             )
 
           ],
